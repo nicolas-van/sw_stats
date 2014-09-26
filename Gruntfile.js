@@ -72,8 +72,8 @@ module.exports = function(grunt) {
         files: [{
           file: "tmp.js",
           method: function(fs, fd, done) {
-            fs.writeSync(fd, "head.load.apply(head, " + JSON.stringify(jsfiles) + ");\n"
-              + "window['$'] = head.ready;");
+            fs.writeSync(fd, "window['$'] = head.ready;\n" +
+              "head.load.apply(head, " + JSON.stringify(jsfiles) + ");\n");
             done();
           }
         }],

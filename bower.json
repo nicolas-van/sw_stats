@@ -1,0 +1,17 @@
+{
+  "name": "thisproject",
+  "version": "0.0.1",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.0.3",
+    "jquery": "~1.10.2",
+    "underscore": "~1.5.2"
+  },
+  "devDependencies": {
+    "headjs": "~1.0.3"
+  }
+}

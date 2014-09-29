@@ -54,9 +54,6 @@ module.exports = function(grunt) {
       }
     },
     uglify: {
-      dev: {
-
-      },
       dist: {
         files: {
           'static/all.js': jsfiles,
@@ -77,7 +74,7 @@ module.exports = function(grunt) {
     },
     concat: {
       dev: {
-        src: ['bower_components/headjs/dist/1.0.0/head.js', 'tmp.js'],
+        src: ['bower_components/headjs/dist/1.0.0/head.load.js', 'tmp.js'],
         dest: 'static/all.js',
       },
     },

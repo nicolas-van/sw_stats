@@ -14,12 +14,14 @@
 
     function displaySuccess() {
         var rolls = explodingRolls(parseInt($("#dice").val()));
-        if ($("#wild-dice").prop("checked")) {
-            rolls = combine(rolls, explodingRolls(6));
+        if ($("#wild-dice").val()) {
+            rolls = combine(rolls, explodingRolls(parseInt($("#wild-dice").val())));
         }
         rolls = applyModif(rolls, parseInt($("#bonus").val()));
         var rate = success(rolls, parseInt($("#difficulty").val()));
         $("#success-rate").text("" + Math.round(rate * 100) + "%");
+        var raise = success(rolls, parseInt($("#difficulty").val()) + 4);
+        $("#raise-rate").text("" + Math.round(raise * 100) + "%");
     }
 
     function simpleRolls(dice) {
@@ -53,7 +55,7 @@
             _.each(rolls2, function(el2) {
                 // take snake eyes into account
                 var result = Math.max(el1[1], el2[1]);
-                lst.push([el1[0] * el2[0], result == 1 ? -10000 : result]);
+                lst.push([el1[0] * el2[0], result === 1 ? -10000 : result]);
             });
         });
         return lst;

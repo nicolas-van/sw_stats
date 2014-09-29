@@ -23,6 +23,7 @@ module.exports = function(grunt) {
   var cssfiles = [].concat(libcssfiles).concat(mycssfiles);
 
   grunt.initConfig({
+    // always used
     less: {
       dev: {
         options: {
@@ -31,54 +32,74 @@ module.exports = function(grunt) {
         files: _.object(mycssfiles, lessfiles),
       }
     },
-    watch: {
-      less: {
-        files: "src/css/**.less",
-        tasks: ['less']
-      },
-      cssmin: {
-        files: cssfiles,
-        tasks: ['cssmin'],
-      },
-    },
-    cssmin: {
-      dist: {
-        files: {
-          'static/css/style.min.css': cssfiles,
-        }
-      },
-    },
     clean: {
       tmp: {
         src: ['tmp.js'],
       }
     },
-    uglify: {
-      dev: {
 
-      },
-      dist: {
-        files: {
-          'static/all.js': jsfiles,
-        }
+    // for dev
+    jshint: {
+      files: myjsfiles,
+      options: {
+        sub: true,
+        eqeqeq: true, // no == or !=
+        immed: true, // forces () around directly called functions
+        forin: true, // makes it harder to use for in
+        latedef: "nofunc", // makes it impossible to use a variable before it is declared
+        newcap: true, // force capitalized constructors
+        strict: true, // enforce strict mode
+        trailing: true, // trailing whitespaces are ugly
+        camelcase: true, // force camelCase
       },
     },
     "file-creator": {
-      dev: {
+      dev_tmpjs: {
         files: [{
           file: "tmp.js",
           method: function(fs, fd, done) {
             fs.writeSync(fd, "window['$'] = head.ready;\n" +
-              "head.load.apply(head, " + JSON.stringify(jsfiles) + ");\n");
+              "head.load.apply(head, " + JSON.stringify(cssfiles.concat(jsfiles)) + ");\n");
             done();
           }
         }],
-      }
+      },
+      dev_css: {
+        files: [{
+          file: "static/style.css",
+          method: function(fs, fd, done) {
+            fs.writeSync(fd, "");
+            done();
+          }
+        }],
+      },
     },
     concat: {
       dev: {
-        src: ['bower_components/headjs/dist/1.0.0/head.js', 'tmp.js'],
+        src: ['bower_components/headjs/dist/1.0.0/head.load.js', 'tmp.js'],
         dest: 'static/all.js',
+      },
+    },
+    watch: {
+      less: {
+        files: "src/css/**.less",
+        tasks: ['less']
+      },
+    },
+
+    // for dist
+    cssmin: {
+      dist: {
+        files: {
+          'static/style.css': cssfiles,
+        }
+      },
+    },
+    uglify: {
+      dist: {
+        files: {
+          'static/all.js': jsfiles,
+        }
       },
     },
   });
@@ -89,10 +110,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-file-creator');
 
-  grunt.registerTask('dev', ['less', 'cssmin', 'file-creator:dev', "concat:dev", "clean:tmp"]);
+  grunt.registerTask('dev', ['jshint', 'less', 'file-creator', "concat:dev", "clean:tmp"]);
   grunt.registerTask('dist', ['less', 'cssmin', 'uglify']);
   grunt.registerTask('watcher', ['dev', 'watch']);
 

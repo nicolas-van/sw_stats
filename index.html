@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Savage Worlds Success Rate Calculator</title>
-    <link rel="stylesheet" href="static/css/style.min.css">
+    <link rel="stylesheet" href="static/style.css">
     <script src="static/all.js"></script>
     <script>
         $(function() {
@@ -37,9 +37,15 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>
-                            <input type="checkbox" id="wild-dice" checked> Use a Wild Die
-                        </label>
+                        <label>Wild Die</label>
+                        <select class="form-control" id="wild-dice" type="text">
+                            <option value="">None</option>
+                            <option value="4">d4</option>
+                            <option value="6" selected>d6</option>
+                            <option value="8">d8</option>
+                            <option value="10">d10</option>
+                            <option value="12">d12</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>Bonus / Malus</label>
@@ -86,6 +92,10 @@
                     <div class="form-group">
                         <label>Success Rate</label>
                         <span class="help-block" id="success-rate"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Raise Rate</label>
+                        <span class="help-block" id="raise-rate"></span>
                     </div>
                 </form>
             </div>
